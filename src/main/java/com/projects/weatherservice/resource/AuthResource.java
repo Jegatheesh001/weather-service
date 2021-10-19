@@ -1,7 +1,8 @@
 package com.projects.weatherservice.resource;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,8 +24,8 @@ public class AuthResource {
 	private AuthService service;
 	
 	@TrackLog
-	@GetMapping("/register")
-	public ResponseEntity<String> registerUser(UserVO user) {
+	@PostMapping("/register")
+	public ResponseEntity<String> registerUser(@RequestBody UserVO user) {
 		return service.registerUser(user);
 	}
 }

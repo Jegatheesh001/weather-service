@@ -1,4 +1,4 @@
-package com.projects.weatherservice.resource;
+package com.projects.weatherservice.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -32,6 +32,26 @@ public class WeatherServiceProxy {
 		StringBuilder queryString = new StringBuilder(weatherServiceURL);
 		queryString.append("?q=");
 		queryString.append(city);
+		queryString.append("&appid=");
+		queryString.append(apiKey);
+		try {
+			ResponseEntity<String> response = restTemplate.exchange(queryString.toString(), HttpMethod.POST,
+					new HttpEntity<>(authHeader), String.class);
+			return response.getBody();
+		} catch (NotFound e) {
+			return e.getMessage();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return "Unknown error";
+		}
+	}
+
+	public String getWeatherDetailsByCoordinate(String lat, String lon) {
+		StringBuilder queryString = new StringBuilder(weatherServiceURL);
+		queryString.append("?lat=");
+		queryString.append(lat);
+		queryString.append("&lon=");
+		queryString.append(lon);
 		queryString.append("&appid=");
 		queryString.append(apiKey);
 		try {

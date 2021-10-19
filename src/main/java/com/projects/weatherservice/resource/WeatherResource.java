@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projects.weatherservice.configuration.aspects.TrackLog;
+import com.projects.weatherservice.service.WeatherService;
 
 import lombok.AllArgsConstructor;
 
@@ -24,5 +25,11 @@ public class WeatherResource {
 	@GetMapping("/byCity")
 	public ResponseEntity<String> getWeatherDetailsByCity(String city) {
 		return service.getWeatherDetailsByCity(city);
+	}
+	
+	@TrackLog
+	@GetMapping("/byCoordinate")
+	public ResponseEntity<String> getWeatherDetailsByCoordinate(String lat, String lon) {
+		return service.getWeatherDetailsByCoordinate(lat, lon);
 	}
 }

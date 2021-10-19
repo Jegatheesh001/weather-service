@@ -1,4 +1,4 @@
-package com.projects.weatherservice.resource;
+package com.projects.weatherservice.service;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,5 +18,9 @@ public class WeatherService {
 
 	public ResponseEntity<String> getWeatherDetailsByCity(String city) {
 		return ResponseEntity.status(HttpStatus.OK).body(proxy.getWeatherDetailsByCity(city));
+	}
+
+	public ResponseEntity<String> getWeatherDetailsByCoordinate(String lat, String lon) {
+		return ResponseEntity.status(HttpStatus.OK).body(proxy.getWeatherDetailsByCoordinate(lat, lon));
 	}
 }

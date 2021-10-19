@@ -17,6 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.projects.weatherservice.business.vo.ErrorMessage;
+import com.projects.weatherservice.business.vo.FieldErrorVO;
 import com.projects.weatherservice.exception.CustomException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,34 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @ControllerAdvice
 public class ExceptionHandler extends ResponseEntityExceptionHandler {
+	/**
+	 * For spring validation errors (Request Body)
+	 */
+	@Override
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		BindingResult result = ex.getBindingResult();
+		return handleBindException(ex, result, request);
+	}
+	
+	/**
+	 * For spring validation errors (Request Form data)
+	 */
+	@Override
+	protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status,
+			WebRequest request) {
+		BindingResult result = ex.getBindingResult();
+		return handleBindException(ex, result, request);
+	}
+	
+	private ResponseEntity<Object> handleBindException(Exception ex, BindingResult result, WebRequest request) {
+		List<FieldErrorVO> fieldErrors = result.getFieldErrors().stream()
+				.map(f -> new FieldErrorVO(f.getObjectName(), f.getField(), f.getDefaultMessage())).collect(Collectors.toList());
+		String errorMessage = "Method argument not valid, fieldErrors:" + fieldErrors;
+		log.warn(errorMessage);
+		return handleExceptionInternal(ex, new ErrorMessage(400, errorMessage), new HttpHeaders(),
+				HttpStatus.BAD_REQUEST, request);
+	}
 	/**
 	 * Method to handle Custom Exception
 	 * 

@@ -1,10 +1,14 @@
 package com.projects.weatherservice.resource;
 
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projects.weatherservice.business.vo.CoordinateVO;
+import com.projects.weatherservice.business.vo.api.ResponseVO;
 import com.projects.weatherservice.configuration.aspects.TrackLog;
 import com.projects.weatherservice.exception.CustomException;
 import com.projects.weatherservice.service.WeatherService;
@@ -28,14 +32,14 @@ public class WeatherResource {
 	@TrackLog
 	@GetMapping("/byCity")
 	@ApiOperation("Get Weather details by city")
-	public ResponseEntity<String> getWeatherDetailsByCity(String city) throws CustomException {
+	public ResponseEntity<ResponseVO> getWeatherDetailsByCity(String city) throws CustomException {
 		return service.getWeatherDetailsByCity(city);
 	}
 	
 	@TrackLog
 	@GetMapping("/byCoordinate")
 	@ApiOperation("Get Weather details by coordinate")
-	public ResponseEntity<String> getWeatherDetailsByCoordinate(String lat, String lon) throws CustomException {
-		return service.getWeatherDetailsByCoordinate(lat, lon);
+	public ResponseEntity<ResponseVO> getWeatherDetailsByCoordinate(@Valid CoordinateVO coordinate) throws CustomException {
+		return service.getWeatherDetailsByCoordinate(coordinate.getLat(), coordinate.getLon());
 	}
 }

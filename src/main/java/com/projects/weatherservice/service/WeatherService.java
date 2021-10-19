@@ -18,12 +18,23 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class WeatherService {
 	private final WeatherServiceProxy proxy;
+	private final WeatherServiceCache cache;
 
 	public ResponseEntity<ResponseVO> getWeatherDetailsByCity(String city) throws CustomException {
-		return ResponseEntity.status(HttpStatus.OK).body(proxy.getWeatherDetailsByCity(city));
+		ResponseVO data = cache.getWeatherDetailsByCity(city);
+		if(data == null) {
+			data = proxy.getWeatherDetailsByCity(city);
+			cache.setWeatherDetailsByCity(city, data);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(data);
 	}
 
 	public ResponseEntity<ResponseVO> getWeatherDetailsByCoordinate(String lat, String lon) throws CustomException {
-		return ResponseEntity.status(HttpStatus.OK).body(proxy.getWeatherDetailsByCoordinate(lat, lon));
+		ResponseVO data = cache.getWeatherDetailsByCoordinate(lat, lon);
+		if(data == null) {
+			data = proxy.getWeatherDetailsByCoordinate(lat, lon);
+			cache.getWeatherDetailsByCoordinate(lat, lon, data);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(data);
 	}
 }

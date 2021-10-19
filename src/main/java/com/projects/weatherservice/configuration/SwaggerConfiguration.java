@@ -41,7 +41,7 @@ public class SwaggerConfiguration {
 
 	private ApiInfo getAPIInfo() {
 		return new ApiInfo("Weather API", "Weather API by city, country and by polar coordinates", "1.0", "Public Service",
-				new Contact("Sapiens Software Systems LLC", "NA", "NA"),
+				new Contact("My Dream World", "NA", "NA"),
 				"API Licence", "Apache", Collections.emptyList());
 	}
 }

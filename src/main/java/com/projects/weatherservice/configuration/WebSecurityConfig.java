@@ -30,14 +30,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
+	
+	private static final String[] AUTH_WHITELIST = {
+            // -- Swagger UI v2
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            // User Register
+            "/auth/*"
+    };
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.httpBasic().and().csrf().disable().authorizeRequests().
-						antMatchers("/swagger-ui.html").permitAll().antMatchers("/v2/api-docs").permitAll().
-						antMatchers("/auth/*").permitAll().
-						anyRequest().authenticated().and().
-						exceptionHandling().and().sessionManagement()
+		httpSecurity.httpBasic().and().csrf().disable().authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll()
+				.anyRequest().authenticated().and().exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 }

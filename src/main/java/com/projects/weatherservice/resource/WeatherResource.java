@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projects.weatherservice.configuration.aspects.TrackLog;
 import com.projects.weatherservice.service.WeatherService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 
 /**
@@ -15,6 +17,7 @@ import lombok.AllArgsConstructor;
  *         <b>Created</b> On On 18-Oct-2021
  *
  */
+@Api("Weather API's - REST")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/weather/v1")
@@ -23,12 +26,14 @@ public class WeatherResource {
 	
 	@TrackLog
 	@GetMapping("/byCity")
+	@ApiOperation("Get Weather details by city")
 	public ResponseEntity<String> getWeatherDetailsByCity(String city) {
 		return service.getWeatherDetailsByCity(city);
 	}
 	
 	@TrackLog
 	@GetMapping("/byCoordinate")
+	@ApiOperation("Get Weather details by coordinate")
 	public ResponseEntity<String> getWeatherDetailsByCoordinate(String lat, String lon) {
 		return service.getWeatherDetailsByCoordinate(lat, lon);
 	}

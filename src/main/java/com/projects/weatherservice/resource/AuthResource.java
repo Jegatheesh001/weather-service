@@ -10,6 +10,8 @@ import com.projects.weatherservice.business.vo.UserVO;
 import com.projects.weatherservice.configuration.aspects.TrackLog;
 import com.projects.weatherservice.service.AuthService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 
 /**
@@ -17,6 +19,7 @@ import lombok.AllArgsConstructor;
  *         <b>Created</b> On On 19-Oct-2021
  *
  */
+@Api("Authentication")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/auth")
@@ -25,6 +28,7 @@ public class AuthResource {
 	
 	@TrackLog
 	@PostMapping("/register")
+	@ApiOperation("Registering user")
 	public ResponseEntity<String> registerUser(@RequestBody UserVO user) {
 		return service.registerUser(user);
 	}

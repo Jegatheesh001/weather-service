@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projects.weatherservice.configuration.aspects.TrackLog;
+import com.projects.weatherservice.exception.CustomException;
 import com.projects.weatherservice.service.WeatherService;
 
 import io.swagger.annotations.Api;
@@ -27,14 +28,14 @@ public class WeatherResource {
 	@TrackLog
 	@GetMapping("/byCity")
 	@ApiOperation("Get Weather details by city")
-	public ResponseEntity<String> getWeatherDetailsByCity(String city) {
+	public ResponseEntity<String> getWeatherDetailsByCity(String city) throws CustomException {
 		return service.getWeatherDetailsByCity(city);
 	}
 	
 	@TrackLog
 	@GetMapping("/byCoordinate")
 	@ApiOperation("Get Weather details by coordinate")
-	public ResponseEntity<String> getWeatherDetailsByCoordinate(String lat, String lon) {
+	public ResponseEntity<String> getWeatherDetailsByCoordinate(String lat, String lon) throws CustomException {
 		return service.getWeatherDetailsByCoordinate(lat, lon);
 	}
 }

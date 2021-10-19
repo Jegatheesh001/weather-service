@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException.NotFound;
 import org.springframework.web.client.RestTemplate;
 
+import com.projects.weatherservice.business.vo.ErrorMessage;
+import com.projects.weatherservice.exception.CustomException;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,7 +32,7 @@ public class WeatherServiceProxy {
 	@Value("${api.path.weatherService}")
 	private String weatherServiceURL;
 
-	public String getWeatherDetailsByCity(String city) {
+	public String getWeatherDetailsByCity(String city) throws CustomException {
 		StringBuilder queryString = new StringBuilder(weatherServiceURL);
 		queryString.append("?q=");
 		queryString.append(city);
@@ -40,14 +43,14 @@ public class WeatherServiceProxy {
 					new HttpEntity<>(authHeader), String.class);
 			return response.getBody();
 		} catch (NotFound e) {
-			return e.getMessage();
+			throw new CustomException(new ErrorMessage(404, "City not found. Try different one"));
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			return "Unknown error";
+			throw new CustomException(new ErrorMessage(500, "Unknown error"));
 		}
 	}
 
-	public String getWeatherDetailsByCoordinate(String lat, String lon) {
+	public String getWeatherDetailsByCoordinate(String lat, String lon) throws CustomException {
 		StringBuilder queryString = new StringBuilder(weatherServiceURL);
 		queryString.append("?lat=");
 		queryString.append(lat);
@@ -60,10 +63,10 @@ public class WeatherServiceProxy {
 					new HttpEntity<>(authHeader), String.class);
 			return response.getBody();
 		} catch (NotFound e) {
-			return e.getMessage();
+			throw new CustomException(new ErrorMessage(404, "Coordinates not found. Try different one"));
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			return "Unknown error";
+			throw new CustomException(new ErrorMessage(500, "Unknown error"));
 		}
 	}
 }

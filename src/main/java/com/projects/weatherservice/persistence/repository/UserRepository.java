@@ -13,4 +13,6 @@ import com.projects.weatherservice.business.entity.UserDetails;
 @Repository
 public interface UserRepository extends JpaRepository<UserDetails, Integer> {
 
+	long countByLoginNameAndLoginPassword(String loginName, String password);
+
 }

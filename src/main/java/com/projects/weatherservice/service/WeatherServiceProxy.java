@@ -24,8 +24,9 @@ public class WeatherServiceProxy {
 	private final RestTemplate restTemplate;
 	private final HttpHeaders authHeader;
 
-	private String apiKey = "cd54b7fbdaf08c6e9677d93bfb7a35b2";
-	@Value("${path.api.weatherService}")
+	@Value("${api.appKey}")
+	private String apiKey;
+	@Value("${api.path.weatherService}")
 	private String weatherServiceURL;
 
 	public String getWeatherDetailsByCity(String city) {
